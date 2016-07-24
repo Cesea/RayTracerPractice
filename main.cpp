@@ -11,8 +11,7 @@ int main(int argc, char *argv[])
 	const int height = 480;
 
 	Image image(width, height);
-	image.GetTestPattern();
-	image.WriteTga("WriteImage.tga");
+	image.WritePPM("WriteImage.ppm");
 
 	return 0;
 }

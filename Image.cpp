@@ -1,193 +1,71 @@
 #include "Image.h"
 
-Image::Image(int width, int height)
+//Image Constructor
+Image::Image(int width_, int height_)
+	:_width(width_), _height(height_)
 {
-	_width = width;
-	_height = height;
-	_max = 1.0;
-
-	//allocate the first dimension, "width" number of color_t pointers..
-	_pixmap = (Color **)malloc(sizeof(Color) * _width);
-	//allocate the second dimension, "height" number of color_t structs..
-	for(int i = 0; i < _width; i++)
-	{
-		_pixmap[i] = (Color *)malloc(sizeof(Color) * _height);
-	}
+	_buffer = (Color *)malloc(_width * _height * sizeof(Color));
+	Clear(Color(1.0));
 }
 
+//Image Destructor
 Image::~Image()
 {
-	//free each column of pixels first
-	for(int i = 0; i < _width; i++)
-	{
-		free(_pixmap[i]);
-	}
-	//free the rows of pixels second
-	free(_pixmap);
+	free(_buffer);
 }
 
-void Image::WriteTga(const char *outfile, bool scale_color)
+//Write to PPM file format
+void Image::WritePPM(const char *outfile)
 {
-	FILE* fp = fopen(outfile, "w");
-	if(fp == NULL)
+	FILE *file;
+	file = fopen(outfile, "w");
+	fprintf(file, "P3\n%i %i\n255\n", _width, _height);
+
+	for (int Y = 0; Y < _height; ++Y)
 	{
-		perror("ERROR : Image::WriteTga() failed to open file for writing!\n");	
-		exit(EXIT_FAILURE);
-	}
-	//Write 24-bit uncompressed targe header
-	////thanks to paul Bourke
-	 putc(0, fp);
-	 putc(0, fp);
-
-	 putc(2, fp); // type is uncompressed RGB
-
-	 putc(0, fp);
-	 putc(0, fp);
-	 putc(0, fp);
-	 putc(0, fp);
-	 putc(0, fp);
-
-	 putc(0, fp); // x origin , low byte
-	 putc(0, fp); // x origin, high byte
-
-	 putc(0, fp); // y origin , low byte
-	 putc(0, fp); // y origin, high byte
-
-	 putc(_width & 0xff, fp); // width, low byte
-	 putc((_width & 0xff00) >> 8, fp); // width , high byte
-
-	 putc(_height & 0xff, fp); // height, low byte
-	 putc((_height & 0xff00) >> 8, fp); // height , high byte
-
-	 putc(24, fp); // 24-bit color depth
-
-	 putc(0, fp);
-	
-	 //Write the raw pixel data in groups of 3 bytes (BGR order);
-	 for(int y = 0; y < _height; y++)
-	 {
-		for(int x = 0; x < _width; x++) 
+		for (int X = 0; X < _width; ++X)
 		{
-			//if color scaling is on, scale 0.0 -> _max as a 0 -> 255 unsigned byte
-			unsigned char rbyte, gbyte, bbyte;
-			if(scale_color)
-			{
-				rbyte = (unsigned char)((_pixmap[x][y].r / _max) * 255);	
-				gbyte = (unsigned char)((_pixmap[x][y].g / _max) * 255);	
-				bbyte = (unsigned char)((_pixmap[x][y].b / _max) * 255);	
-			}
-			else
-			{
-				double r = (_pixmap[x][y].r > 1.0) ? 1.0 : _pixmap[x][y].r;	
-				double g = (_pixmap[x][y].g > 1.0) ? 1.0 : _pixmap[x][y].g;	
-				double b = (_pixmap[x][y].b > 1.0) ? 1.0 : _pixmap[x][y].b;	
-				rbyte = (unsigned char)(r * 255);
-				gbyte = (unsigned char)(g * 255);
-				bbyte = (unsigned char)(b * 255);
-			}
-			putc(bbyte, fp);
-			putc(gbyte, fp);
-			putc(rbyte, fp);
+			Color temp = _buffer[Y * _width + X];
+			unsigned char ir = unsigned char(temp.r * 255.99);
+			unsigned char ig = unsigned char(temp.g * 255.99);
+			unsigned char ib = unsigned char(temp.b * 255.99);
+			fprintf(file, "%u %u %u ", ir, ig, ib);
 		}
-	 }
-	 fclose(fp);
+	}
+	fclose(file);
 }
 
-void Image::GetTestPattern()
+void Image::Clear(Color& color)
 {
-    Color pxl = {0.0, 0.0, 0.0, 0.0};
-    int i, j, color;
-    float radius, dist;
-    
-    // draw a rotating color checkerboard (RGB) in a 25x25 pixel grid
-    for (int x = 0; x < _width; x++)
-    {
-        for (int y = 0; y < _height; y++)
-        {
-            i = x / 25;
-            j = y / 25;
-            color = (i + j) % 3;
-            
-            switch (color)
-            {
-                case 0: // red
-                    pxl.r = 1.0; pxl.g = 0.0; pxl.b = 0.0;
-                    break;
-
-                case 1: // green
-                    pxl.r = 0.0; pxl.g = 1.0; pxl.b = 0.0;
-                    break;
-
-                case 2: // blue
-                    pxl.r = 0.0; pxl.g = 0.0; pxl.b = 1.0;
-                    break;
-            }
-
-            pixel(x, y, pxl);
-        } 
-    }
-
-    // draw a black circle in the top left quadrant (centered at (i, j))
-    pxl.r = 0.0; pxl.g = 0.0; pxl.b = 0.0;
-    i = _width / 4;
-    j = 3 * _height / 4;
-    radius = (((float)_width / 4.0) < ((float)_height / 4.0)) ? (float)_width / 4.0 : (float)_height / 4.0;
-    for (int x = 0; x < _width; x++)
-    {
-        for (int y = 0; y < _height; y++)
-        {
-            dist = sqrtf((float)((x - i) * (x - i)) + (float)((y - j) * (y - j)));
-            if (dist <= (float)radius)
-            {
-                pixel(x, y, pxl);
-            }
-        }
-    }
-    
-    // draw a white circle in the lower right quadrant (centered at (i, j))
-    pxl.r = 1.0; pxl.g = 1.0; pxl.b = 1.0;
-    i = 3 * _width / 4;
-    j = _height / 4;
-    radius = (((float)_width / 4.0) < ((float)_height / 4.0)) ? (float)_width / 4.0 : (float)_height / 4.0;
-    for (int x = 0; x < _width; x++)
-    {
-        for (int y = 0; y < _height; y++)
-        {
-            dist = sqrtf((float)((x - i) * (x - i)) + (float)((y - j) * (y - j)));
-            if (dist <= (float)radius)
-            {
-                pixel(x, y, pxl);
-            }
-        }
-    }
+	for (int Y = 0; Y < _height; ++Y)
+	{
+		for (int X = 0; X < _width; ++X)
+		{
+			_buffer[Y * _width + X] = color;
+		}
+	}
 }
 
+//Get the Color in the buffer
 Color Image::pixel(int x, int y)
 {
-	if(x < 0 || x > _width -1 ||
-	   y < 0 || y > _height -1)
-	{
-		//catostrophically fail
-		fprintf(stderr, "ERROR : Image::pixel(%d, %d) outside range of the image!\n", x, y);
-	}
-	return _pixmap[x][y];
+	return _buffer[_width * y + x];
 }
 
-void Image::pixel(int x, int y, Color pxl)
+//Set the Color in the buffer
+void Image::pixel(int x, int y, Color c)
 {
-	if(x < 0 || x > _width - 1||
-	   y < 0 || y > _height - 1)
-	{
-		//catostrophically fail
-		fprintf(stderr, "ERROR : Image::pixel(%d, %d, pixel) outside range of the image!\n", x, y);
-		exit(EXIT_FAILURE);
-	}
-	_pixmap[x][y] = pxl;
+	_buffer[_width * y + x] = c;
+}
 
-	//update the max color if necessary
-	_max = (pxl.r > _max) ? pxl.r : _max;
-	_max = (pxl.g > _max) ? pxl.g : _max;
-	_max = (pxl.b > _max) ? pxl.b : _max;
+//Get the Image width
+int Image::width() const
+{
+	return _width;
+}
 
-
+//Get the Image height
+int Image::height() const
+{
+	return _height;
 }
