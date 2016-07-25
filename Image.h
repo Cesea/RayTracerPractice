@@ -15,6 +15,7 @@
 class Image
 {
 	public :
+		Image();
 		Image(int width_, int height);
 		~Image();
 

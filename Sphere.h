@@ -3,7 +3,7 @@
 
 #include "Shape.h"
 
-class Sphere
+class Sphere : public Shape
 {
 public :
 	Vector3 center;

@@ -1,6 +1,10 @@
 #include "Image.h"
 
 //Image Constructor
+Image::Image()
+	:buffer(NULL), width(), height()
+{}
+
 Image::Image(int width_, int height_)
 	:width(width_), height(height_)
 {

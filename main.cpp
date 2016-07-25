@@ -9,6 +9,8 @@
 #include "Sphere.h"
 #include "ShadeRec.h"
 
+#include "RayTracer.h"
+
 
 
 int main(int argc, char *argv[])
@@ -16,11 +18,21 @@ int main(int argc, char *argv[])
 	const int width = 640;
 	const int height = 480;
 
-	Image image(width, height);
+	RayTracer raytracer(width, height, "WriteImage.ppm");
 
-	Sphere sphere(Vector3(200, 200, -100), 100, Color(0.5, 0.2, 0.3));
+	raytracer.addShape(new Sphere(Vector3(300, 300, -100), 100, Color(1.0, 0.4, 0.0)));
 
+	for (int Y = 0; Y < height; ++Y)
+	{
+		for (int X = 0; X < width; ++X)
+		{
+			Ray camRay = raytracer.castRay(X, Y);
+			Color pixcolor = raytracer.traceRay(camRay);
+			raytracer.image->pixel(X, Y, pixcolor);
+		}
+	}
 
+/*
 	Color color;
 	ShadeRec rec;
 	for (int Y = 0; Y < height; ++Y)
@@ -40,6 +52,10 @@ int main(int argc, char *argv[])
 	}
 
 	image.WritePPM("WriteImage.ppm");
+
+	RayTracer raytracer(width, height);
+	*/
+	raytracer.write();
 
 	return 0;
 }
