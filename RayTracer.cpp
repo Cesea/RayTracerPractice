@@ -44,8 +44,14 @@ Color RayTracer::calculate_pixel_color(const ShadeRec& rec)
 		Vector3 toLight = normalize(temp->position - rec.hit_point);
 		double LdotN = dot(toLight, rec.normal);
 
-		if (LdotN > 0.0)
+		if (LdotN >= 0.0 )
 		{
+			Ray shadowRay(rec.hit_point + EPSILON * toLight, toLight);
+			ShadeRec shadowRec;
+			shadowRec = traceRay(shadowRay);
+			if (shadowRec.hit)
+				continue;
+
 			retColor += rec.color * LdotN;
 		}
 	}

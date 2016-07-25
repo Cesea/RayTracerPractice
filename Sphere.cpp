@@ -1,6 +1,6 @@
 #include "Sphere.h"
 
-ShadeRec Sphere::hit(const Ray& ray, double tmin, double tmax) const
+ShadeRec Sphere::hit(const Ray& ray, double tmin, double tmax) 
 {
 	ShadeRec rec;
 
@@ -23,6 +23,7 @@ ShadeRec Sphere::hit(const Ray& ray, double tmin, double tmax) const
 			rec.color = color;
 			rec.hit_point = ray.calculate_point(t);
 			rec.normal = (rec.hit_point - center) / radius;
+			rec.shape = this;
 			return rec;
 		}
 		t = (-b + discriminant) / (2 * a);
@@ -33,6 +34,7 @@ ShadeRec Sphere::hit(const Ray& ray, double tmin, double tmax) const
 			rec.color = color;
 			rec.hit_point = ray.calculate_point(t);
 			rec.normal = (rec.hit_point - center) / radius;
+			rec.shape = this;
 			return rec;
 		}
 	}

@@ -3,6 +3,7 @@
 
 #include "Vector3.h"
 
+class Shape;
 /*
 	This class Will be used to Shade objects
 */
@@ -15,6 +16,7 @@ public :
 	Vector3 hit_point;
 	Vector3 normal;
 	Color color;
+	Shape* shape;
 
 	ShadeRec()
 		:hit(false), t(), hit_point(), normal(), color()

@@ -20,14 +20,15 @@ int main(int argc, char *argv[])
 	const int width = 640;
 	const int height = 480;
 
-	RayTracer raytracer(width, height, "WriteImage2.ppm");
+	RayTracer raytracer(width, height, "WriteImage3.ppm");
 
-	raytracer.addShape(new Sphere(Vector3(200, 150, -200), 80, Color(1.0, 1.0, 0.0)));
-	raytracer.addShape(new Sphere(Vector3(300, 150, -100), 80, Color(1.0, 0.0, 0.0)));
+	raytracer.addShape(new Sphere(Vector3(200, 150, -300), 80, Color(1.0, 1.0, 0.0)));
+	raytracer.addShape(new Sphere(Vector3(300, 150, -300), 80, Color(1.0, 0.0, 0.0)));
 	raytracer.addShape(new Sphere(Vector3(320, 240, -400), 100, Color(1.0, 0.4, 0.0)));
+	raytracer.addShape(new Sphere(Vector3(320, 2480, -400), 2130, Color(0.5, 0.4, 0.5)));
 
-	raytracer.addLight(new Light(Vector3(220, 240, -50)));
-	raytracer.addLight(new Light(Vector3(440, 440, -500)));
+	raytracer.addLight(new Light(Vector3(0, -100, -300)));
+	raytracer.addLight(new Light(Vector3(640, -100, -300)));
 
 
 	Color pixcolor(0);
