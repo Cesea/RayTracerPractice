@@ -25,6 +25,7 @@ class Image
 		//propertry accessors
 		Color pixel(int x, int y);
 		void pixel(int x, int y, Color pxl);
+		void clamp(double d);
 
 	private :
 		int width;

@@ -30,9 +30,10 @@ void Image::WritePPM(const char *outfile)
 		for (int X = 0; X < width; ++X)
 		{
 			Color temp = buffer[Y * width + X];
-			unsigned char ir = unsigned char(temp.r * 255.99);
-			unsigned char ig = unsigned char(temp.g * 255.99);
-			unsigned char ib = unsigned char(temp.b * 255.99);
+			temp.clamp(1.0);
+			unsigned char ir = unsigned char(temp.r * 255.9);
+			unsigned char ig = unsigned char(temp.g * 255.9);
+			unsigned char ib = unsigned char(temp.b * 255.9);
 			fprintf(file, "%u %u %u ", ir, ig, ib);
 		}
 	}
@@ -49,6 +50,18 @@ void Image::Clear(Color& color)
 		}
 	}
 }
+
+void Image::clamp(double d)
+{
+	for (int Y = 0; Y < height; ++Y)
+	{
+		for (int X = 0; X < width; ++X)
+		{
+			buffer[Y * width + X].clamp(d);
+		}
+	}
+}
+
 
 //Get the Color in the buffer
 Color Image::pixel(int x, int y)

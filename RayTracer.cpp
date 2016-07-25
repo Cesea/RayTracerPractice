@@ -34,6 +34,25 @@ ShadeRec RayTracer::traceRay(const Ray& ray)
 	return rec;
 }
 
+Color RayTracer::calculate_pixel_color(const ShadeRec& rec)
+{
+	Color retColor(0);
+
+	for (int i = 0; i < lights.size(); ++i)
+	{
+		Light *temp = lights[i];
+		Vector3 toLight = normalize(temp->position - rec.hit_point);
+		double LdotN = dot(toLight, rec.normal);
+
+		if (LdotN > 0.0)
+		{
+			retColor += rec.color * LdotN;
+		}
+	}
+
+	return retColor;
+}
+
 void RayTracer::write()
 {
 	image->WritePPM(outname);

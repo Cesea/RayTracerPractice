@@ -51,4 +51,14 @@ inline Color operator- (const Color& c1, const Color& c2)
 {
 	return Color(c1.r - c2.r, c1.g - c2.g, c1.b - c2.b);
 }
+
+inline Color operator * (const Color& c, const double d)
+{
+	return Color(c.r*d, c.g*d, c.b*d);
+}
+inline Color operator / (const Color& c, const double d)
+{
+	return Color(c.r / d, c.g / d, c.b / d);
+}
+
 #endif
