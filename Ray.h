@@ -3,6 +3,9 @@
 
 #include "Vector3.h"
 
+/*
+	Ray class
+*/
 class Ray
 {
 public :
@@ -22,7 +25,7 @@ public :
 	{
 		return origin + (direction * t);
 	}
-};
+}; //Ray class
 
 
 #endif

@@ -3,6 +3,9 @@
 
 #include <math.h>
 
+/*
+	Basic Vector3 class
+*/
 class Vector3
 {
 public :
@@ -30,7 +33,7 @@ public :
 	double length_squared();
 	void normalize();
 
-};
+}; //Vector3
 
 inline Vector3 operator + (const Vector3& v1, const Vector3& v2)
 {
@@ -56,5 +59,19 @@ return Vector3(v1.x / d, v1.y / d, v1.z / d);
 inline Vector3 normalize(Vector3 v)
 {
 	return v / v.length();
+}
+
+//Dot product
+inline double dot(const Vector3& v1, const Vector3& v2)
+{
+	return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+}
+
+//Cross product
+inline Vector3 corss(const Vector3& v1, const Vector3& v2)
+{
+	return Vector3(v1.y*v2.z - v1.z*v2.y,
+					v1.z*v2.x - v1.x*v2.z,
+					v1.x*v2.y - v1.y*v2.x);
 }
 #endif
