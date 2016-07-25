@@ -1,8 +1,14 @@
 #ifndef __COLOR_H__
 #define __COLOR_H__
 
-//Color Class
+#include <algorithm>
 
+static double maxd(double a, double b)
+{
+	return a > b ? a : b;
+}
+
+//Color Class
 class Color
 {
 
@@ -35,12 +41,8 @@ class Color
 			return *this;
 		}
 
-		void clamp(double max = 1.0)
-		{
-			if (r > max) r = max;
-			if (g > max) r = max;
-			if (b > max) r = max;
-		}
+		Color& clamp();
+		
 };
 
 inline Color operator+ (const Color& c1, const Color& c2)

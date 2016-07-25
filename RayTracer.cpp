@@ -50,6 +50,7 @@ Color RayTracer::calculate_pixel_color(const ShadeRec& rec)
 		}
 	}
 
+	retColor += rec.color * 0.1;
 	return retColor;
 }
 

@@ -30,11 +30,18 @@ void Image::WritePPM(const char *outfile)
 		for (int X = 0; X < width; ++X)
 		{
 			Color temp = buffer[Y * width + X];
-			temp.clamp(1.0);
-			unsigned char ir = unsigned char(temp.r * 255.9);
-			unsigned char ig = unsigned char(temp.g * 255.9);
-			unsigned char ib = unsigned char(temp.b * 255.9);
-			fprintf(file, "%u %u %u ", ir, ig, ib);
+			temp = temp.clamp();
+			/*
+			if (temp.r > 1.0 || temp.b > 1.0 || temp.g > 1.0)
+			{
+				temp.r = 1.0; temp.b = 0.0; temp.g = 0.0;
+			}
+			*/
+
+			unsigned char ir = unsigned char(temp.r * 255.99);
+			unsigned char ig = unsigned char(temp.g * 255.99);
+			unsigned char ib = unsigned char(temp.b * 255.99);
+			fprintf(file, "%uc %uc %uc ", ir, ig, ib);
 		}
 	}
 	fclose(file);
@@ -57,7 +64,7 @@ void Image::clamp(double d)
 	{
 		for (int X = 0; X < width; ++X)
 		{
-			buffer[Y * width + X].clamp(d);
+			buffer[Y * width + X].clamp();
 		}
 	}
 }
