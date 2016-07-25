@@ -12,7 +12,7 @@
 class Shape
 {
 public :
-	virtual ShadeRec hit(const Ray& ray) const = 0;
+	virtual ShadeRec hit(const Ray& ray, double tmin, double tmax) const = 0;
 };
 
 #endif

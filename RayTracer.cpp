@@ -18,17 +18,20 @@ Ray RayTracer::castRay(int width_, int height_)
 	return Ray(origin, direction);
 }
 
-Color RayTracer::traceRay(const Ray& ray)
+ShadeRec RayTracer::traceRay(const Ray& ray)
 {
+	double closest_t = MAX;
+	ShadeRec rec;
 	for (int i = 0; i < shapes.size(); ++i)
 	{
-		ShadeRec rec = shapes[i]->hit(ray);
-		if (rec.hit)
+		ShadeRec temp = shapes[i]->hit(ray, EPSILON, closest_t);
+		if (temp.hit && temp.t < closest_t)
 		{
-			return rec.color;
+			closest_t = temp.t;
+			rec = temp;
 		}
 	}
-	return Color(0);
+	return rec;
 }
 
 void RayTracer::write()

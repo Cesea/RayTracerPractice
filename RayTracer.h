@@ -3,6 +3,8 @@
 
 #include <vector>
 
+#include "Constants.h"
+
 #include "Vector3.h"
 #include "Color.h"
 #include "Image.h"
@@ -10,6 +12,8 @@
 #include "ShadeRec.h"
 #include "Shape.h"
 #include "Sphere.h"
+
+
 
 class RayTracer
 {
@@ -28,7 +32,7 @@ public :
 
 	//member function
 	Ray castRay(int width_, int height_);
-	Color traceRay(const Ray& ray);
+	ShadeRec traceRay(const Ray& ray);
 	void write();
 
 	void addShape(Shape *shape);

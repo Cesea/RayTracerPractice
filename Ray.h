@@ -21,7 +21,7 @@ public :
 	{}
 
 	//member function
-	Vector3 calculate_point(double t)
+	Vector3 calculate_point(double t) const
 	{
 		return origin + (direction * t);
 	}

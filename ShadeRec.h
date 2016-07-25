@@ -11,12 +11,13 @@ class ShadeRec
 public :
 
 	bool hit;
+	double t;
 	Vector3 hit_point;
 	Vector3 normal;
 	Color color;
 
 	ShadeRec()
-		:hit(false), hit_point(), normal(), color()
+		:hit(false), t(), hit_point(), normal(), color()
 	{}
 };
 
