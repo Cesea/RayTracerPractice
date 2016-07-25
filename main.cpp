@@ -9,6 +9,7 @@
 #include "Color.h"
 #include "Shape.h"
 #include "Sphere.h"
+#include "Plane.h"
 #include "ShadeRec.h"
 
 #include "RayTracer.h"
@@ -17,18 +18,18 @@
 
 int main(int argc, char *argv[])
 {
-	const int width = 640;
-	const int height = 480;
+	const int width = 600;
+	const int height = 600;
 
 	RayTracer raytracer(width, height, "WriteImage3.ppm");
 
-	raytracer.addShape(new Sphere(Vector3(200, 150, -300), 80, Color(1.0, 1.0, 0.0)));
-	raytracer.addShape(new Sphere(Vector3(300, 150, -300), 80, Color(1.0, 0.0, 0.0)));
-	raytracer.addShape(new Sphere(Vector3(320, 240, -400), 100, Color(1.0, 0.4, 0.0)));
-	raytracer.addShape(new Sphere(Vector3(320, 2480, -400), 2130, Color(0.5, 0.4, 0.5)));
 
-	raytracer.addLight(new Light(Vector3(0, -100, -300)));
-	raytracer.addLight(new Light(Vector3(640, -100, -300)));
+	raytracer.addShape(new Sphere(Vector3(0.0, 0.0, -10.0), 5.0, Color(1.0, 0.0, 0.0)));
+//	raytracer.addShape(new Sphere(Vector3(0.0, -10.0, -10.0), 5, Color(0.5, 0.5, 0.5)));
+	raytracer.addShape(new Plane(Vector3(0.0, -5.0, 0.0), Vector3(0.0, 1.0, 0.0), Color(0.5, 0.5, 0.5)));
+	raytracer.addLight(new Light(Vector3(0, 10, 0.0)));
+//	raytracer.addLight(new Light(Vector3(640, -100, -300)));
+
 
 
 	Color pixcolor(0);

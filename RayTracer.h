@@ -22,6 +22,8 @@ class RayTracer
 public :
 
 	//member variable
+	int width;
+	int height;
 	std::vector<Shape *> shapes;
 	std::vector<Light *> lights;
 	Image *image;
@@ -34,8 +36,9 @@ public :
 	~RayTracer();
 
 	//member function
-	Ray castRay(int width_, int height_);
+	Ray castRay(int x, int y);
 	ShadeRec traceRay(const Ray& ray);
+	bool traceShadowRay(const Ray& ray, const ShadeRec& rec);
 	Color calculate_pixel_color(const ShadeRec& rec);
 	void write();
 

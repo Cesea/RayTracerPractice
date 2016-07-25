@@ -19,6 +19,7 @@ public :
 	{}
 
 	virtual ShadeRec hit(const Ray& ray, double tmin, double tmax) ;
+	virtual ShadeRec shadowHit(const Ray& ray, double tmin, double tmax);
 
 };
 

@@ -19,7 +19,11 @@ public :
 	Shape* shape;
 
 	ShadeRec()
-		:hit(false), t(), hit_point(), normal(), color()
+		:hit(false), t(), hit_point(), normal(), color(), shape(NULL)
+	{}
+
+	ShadeRec(bool hit_)
+		:hit(hit_), t(), hit_point(), normal(), color(), shape(NULL)
 	{}
 };
 
