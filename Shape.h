@@ -2,6 +2,7 @@
 #define __SHAPE_H__
 
 #include "Ray.h"
+#include "Color.h"
 #include "ShadeRec.h"
 
 /*

@@ -13,9 +13,10 @@ public :
 	bool hit;
 	Vector3 hit_point;
 	Vector3 normal;
+	Color color;
 
 	ShadeRec()
-		:hit(false), hit_point(), normal()
+		:hit(false), hit_point(), normal(), color()
 	{}
 };
 

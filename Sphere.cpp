@@ -13,6 +13,7 @@ ShadeRec Sphere::hit(const Ray& ray) const
 	if (discriminant > 0)
 	{
 		rec.hit = true;
+		rec.color = color;
 		return rec;
 		/*
 			Calculation code	

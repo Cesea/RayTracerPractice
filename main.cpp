@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
 
 	Image image(width, height);
 
-	Sphere sphere(Vector3(200, 200, -100), 100);
+	Sphere sphere(Vector3(200, 200, -100), 100, Color(0.5, 0.2, 0.3));
 
 
 	Color color;
@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
 			Ray camRay(origin, direction);
 			rec = sphere.hit(camRay);
 			if (rec.hit)
-				color = Color(1.0);
+				color = rec.color;
 			else
 				color = Color(0);
 			image.pixel(X, Y, color);
