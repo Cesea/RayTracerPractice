@@ -1,7 +1,9 @@
 #include "Sphere.h"
 
-bool Sphere::hit(const Ray& ray) const
+ShadeRec Sphere::hit(const Ray& ray) const
 {
+	ShadeRec rec;
+
 	Vector3 o_minus_c = ray.origin - center;
 	double a = dot(ray.direction, ray.direction);
 	double b = 2 * dot(ray.direction, o_minus_c);
@@ -10,7 +12,8 @@ bool Sphere::hit(const Ray& ray) const
 	double discriminant = b*b - 4 * a*c;
 	if (discriminant > 0)
 	{
-		return true;
+		rec.hit = true;
+		return rec;
 		/*
 			Calculation code	
 		*/	
@@ -18,6 +21,7 @@ bool Sphere::hit(const Ray& ray) const
 
 	else
 	{
-		return false;
+		rec.hit = false;
+		return rec;
 	}
 }

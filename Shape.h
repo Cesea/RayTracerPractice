@@ -2,6 +2,7 @@
 #define __SHAPE_H__
 
 #include "Ray.h"
+#include "ShadeRec.h"
 
 /*
 	Shape class
@@ -10,7 +11,7 @@
 class Shape
 {
 public :
-	virtual bool hit(const Ray& ray) const = 0;
+	virtual ShadeRec hit(const Ray& ray) const = 0;
 };
 
 #endif

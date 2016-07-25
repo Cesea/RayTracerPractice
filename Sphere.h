@@ -17,7 +17,7 @@ public :
 		:center(center_), radius(radius_)
 	{}
 
-	virtual bool hit(const Ray& ray) const;
+	virtual ShadeRec hit(const Ray& ray) const;
 
 };
 
