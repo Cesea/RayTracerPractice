@@ -1,24 +1,24 @@
-#ifndef __VECTOR_H__
-#define __VECTOR_H__
+#ifndef VECTORH
+#define VECTORH
 
 #include <math.h>
 
 class Vector3
 {
 public :
-	double _x, _y, _z;
+	double x, y, z;
 
 // Constructors
 	Vector3()
-		:_x(), _y(), _z()
+		:x(), y(), z()
 	{}
 
 	Vector3(double a)
-		: _x(a), _y(a), _z(a)
+		: x(a), y(a), z(a)
 	{}
 
 	Vector3(double x_, double y_, double z_)
-		:_x(x_), _y(y_), _z(z_)
+		:x(x_), y(y_), z(z_)
 	{}
 
 	Vector3& operator += (const Vector3& v);
@@ -34,23 +34,23 @@ public :
 
 inline Vector3 operator + (const Vector3& v1, const Vector3& v2)
 {
-	return Vector3(v1._x + v2._x, v1._y + v2._y, v1._z + v2._z);
+	return Vector3(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z);
 }
 inline Vector3 operator - (const Vector3& v1, const Vector3& v2)
 {
-	return Vector3(v1._x - v2._x, v1._y - v2._y, v1._z - v2._z);
+	return Vector3(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z);
 }
 inline Vector3 operator * (const Vector3& v1, const double d)
 {
-	return Vector3(v1._x * d, v1._y * d, v1._z * d);
+	return Vector3(v1.x * d, v1.y * d, v1.z * d);
 }
 inline Vector3 operator * (const double d, const Vector3& v1)
 {
-	return Vector3(v1._x * d, v1._y * d, v1._z * d);
+	return Vector3(v1.x * d, v1.y * d, v1.z * d);
 }
 inline Vector3 operator / (const Vector3& v1, const double d)
 {
-return Vector3(v1._x / d, v1._y / d, v1._z / d);
+return Vector3(v1.x / d, v1.y / d, v1.z / d);
 }
 
 inline Vector3 normalize(Vector3 v)

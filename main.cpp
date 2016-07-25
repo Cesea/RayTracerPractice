@@ -2,8 +2,11 @@
 #include <stdlib.h>
 #include <math.h>
 
-
 #include "Image.h"
+#include "Vector3.h"
+#include "Color.h"
+
+
 
 int main(int argc, char *argv[])
 {

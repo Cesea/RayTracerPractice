@@ -15,12 +15,12 @@ class Color
 			:r(0), g(0), b(0) 
 		{}
 
-		Color(double _f)
-			:r(_f), g(_f), b(_f)
+		Color(double f_)
+			:r(f_), g(f_), b(f_)
 		{}
 
-		Color(double _r, double _g, double _b)
-			:r(_r), g(_g), b(_b)
+		Color(double r_, double g_, double b_)
+			:r(r_), g(g_), b(b_)
 		{}
 
 		inline Color& operator += (const Color& c)
