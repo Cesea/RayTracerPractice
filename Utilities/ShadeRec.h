@@ -2,6 +2,7 @@
 #define __SHADEREC_H__
 
 #include "Vector3.h"
+#include "Ray.h"
 
 class Shape;
 /*
@@ -13,17 +14,17 @@ public :
 
 	bool hit;
 	double t;
+	Ray ray;
 	Vector3 hit_point;
 	Vector3 normal;
-	Color color;
 	Shape* shape;
 
 	ShadeRec()
-		:hit(false), t(), hit_point(), normal(), color(), shape(NULL)
+		:hit(false), t(), hit_point(), normal(), shape(NULL), ray()
 	{}
 
 	ShadeRec(bool hit_)
-		:hit(hit_), t(), hit_point(), normal(), color(), shape(NULL)
+		:hit(hit_), t(), hit_point(), normal(), shape(NULL), ray()
 	{}
 };
 

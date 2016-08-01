@@ -2,6 +2,7 @@
 #define __RAY_TRACER_H__
 
 #include <vector>
+#include <algorithm>
 
 #include "Constants.h"
 
@@ -11,6 +12,8 @@
 #include "Ray.h"
 #include "ShadeRec.h"
 #include "Shape.h"
+#include "Reflective.h"
+#include "Diffusive.h"
 #include "Sphere.h"
 
 #include "Light.h"
@@ -36,10 +39,10 @@ public :
 	~RayTracer();
 
 	//member function
-	Ray castRay(int x, int y);
+	Ray castRay(double x, double y);
 	ShadeRec traceRay(const Ray& ray);
 	bool traceShadowRay(const Ray& ray, const ShadeRec& rec);
-	Color calculate_pixel_color(const ShadeRec& rec);
+	Color calculate_pixel_color(const Ray& ray, int iteration);
 	void write();
 
 	void addShape(Shape *shape);

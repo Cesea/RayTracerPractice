@@ -9,19 +9,17 @@ public :
 
 	Vector3 origin;
 	Vector3 normal;
-	Color color;
 
 	Plane()
-		:origin(), normal(), color()
+		:origin(), normal(), Shape::Shape()
 	{}
 
-	Plane(Vector3& origin_, Vector3& normal_, Color& color_)
-		:origin(origin_), normal(normal_), color(color_)
+	Plane(Vector3& origin_, Vector3& normal_, Material* m_)
+		:origin(origin_), normal(normal_), Shape::Shape(m_)
 	{}
 
 	virtual ShadeRec hit(const Ray& ray, double tmin, double tmax);
 	virtual ShadeRec shadowHit(const Ray& ray, double tmim, double tmax);
-
 
 };
 

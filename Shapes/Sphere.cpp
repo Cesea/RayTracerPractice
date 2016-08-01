@@ -2,7 +2,7 @@
 
 ShadeRec Sphere::hit(const Ray& ray, double tmin, double tmax) 
 {
-	ShadeRec rec;
+	ShadeRec rec(false);
 
 	Vector3 o_minus_c = ray.origin - center;
 	double a = dot(ray.direction, ray.direction);
@@ -20,9 +20,9 @@ ShadeRec Sphere::hit(const Ray& ray, double tmin, double tmax)
 		{
 			rec.hit = true;
 			rec.t = t;
-			rec.color = color;
 			rec.hit_point = ray.calculate_point(t);
 			rec.normal = (rec.hit_point - center) / radius;
+			rec.ray = ray;
 			rec.shape = this;
 			return rec;
 		}
@@ -31,12 +31,13 @@ ShadeRec Sphere::hit(const Ray& ray, double tmin, double tmax)
 		{
 			rec.hit = true;
 			rec.t = t;
-			rec.color = color;
 			rec.hit_point = ray.calculate_point(t);
 			rec.normal = (rec.hit_point - center) / radius;
+			rec.ray = ray;
 			rec.shape = this;
 			return rec;
 		}
+		return rec;
 	}
 	else
 	{

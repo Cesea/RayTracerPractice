@@ -36,6 +36,6 @@ double Vector3::length_squared()
 
 void Vector3::normalize()
 {
-	float k = 1.0 / sqrt(x*x + y*y + z*z);
+	double k = 1.0 / sqrt(x*x + y*y + z*z);
 	x *= k; y *= k; z *= k;
 }

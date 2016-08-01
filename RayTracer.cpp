@@ -12,7 +12,7 @@ RayTracer::~RayTracer()
 	free(image);
 }
 
-Ray RayTracer::castRay(int x, int y)
+Ray RayTracer::castRay(double x, double y)
 {
 	/*orthogonal
 	int rayX = x - width / 2;
@@ -22,14 +22,14 @@ Ray RayTracer::castRay(int x, int y)
 	Vector3 direction(0, 0, -1);
 	return Ray(origin, direction);
 	*/
-	double u = double(x) / double(width);
-	double v = double(y) / double(height);
+	double u = (x) / double(width);
+	double v = (y) / double(height);
 
 	Vector3 origin(0, 0, 0);
 	Vector3 upper_left(-1.0, 1.0, -1.0);
 	Vector3 horizontal(2.0, 0.0, 0.0);
 	Vector3 vertical(0.0, 2.0, 0.0);
-	Vector3 direction = normalize(upper_left + horizontal * u - vertical * v);
+	Vector3 direction = normalize(upper_left + horizontal * u - vertical * v - origin);
 	Ray ray(origin, direction);
 	return ray;
 }
@@ -37,10 +37,11 @@ Ray RayTracer::castRay(int x, int y)
 ShadeRec RayTracer::traceRay(const Ray& ray)
 {
 	double closest_t = MAX;
-	ShadeRec rec;
+	ShadeRec rec(false);
 	for (int i = 0; i < shapes.size(); ++i)
 	{
-		ShadeRec temp = shapes[i]->hit(ray, EPSILON, closest_t);
+		ShadeRec temp(false); 
+		temp = shapes[i]->hit(ray, EPSILON, closest_t);
 		if (temp.hit && temp.t < closest_t)
 		{
 			closest_t = temp.t;
@@ -57,46 +58,86 @@ bool RayTracer::traceShadowRay(const Ray& ray, const ShadeRec& rec)
 	for (int i = 0; i < shapes.size(); ++i)
 	{
 		ShadeRec shadowRec = shapes[i]->shadowHit(ray, EPSILON, closest_t);
-		if (shadowRec.hit &&  rec.t < closest_t && shadowRec.shape != rec.shape)
+		if (shadowRec.hit &&  shadowRec.t < closest_t && shadowRec.shape != rec.shape)
 		{
-			closest_t = rec.t;
-			return true;
+			temp = true;
+			break;
 		}
 		else
 		{
-			return false;
+			continue;
 		}
 	}
+	return temp;
 }
 
 
-Color RayTracer::calculate_pixel_color(const ShadeRec& rec)
+Color RayTracer::calculate_pixel_color(const Ray& ray, int iteration)
 {
 	Color retColor(0);
 
-	for (int i = 0; i < lights.size(); ++i)
-	{
-		Light *temp = lights[i];
-		Vector3 toLight = (temp->position - rec.hit_point);
-		Vector3 lightDirection = normalize(toLight);
-		double LdotN = dot(lightDirection, rec.normal);
+	ShadeRec rec(false);
+	rec = traceRay(ray);
+	Light* light = nullptr;
 
-		if (LdotN >= 0.0 )
+	if (rec.hit  && rec.shape != nullptr)
+	{
+		//ambient light
+		retColor =  retColor + (rec.shape->mat->albedo * 0.1) ;
+
+		//diffuse color calculation
+		for (int i = 0; i < lights.size(); ++i)
 		{
-			/* i have to fix Shadow*/
-			Ray shadowRay(rec.hit_point + lightDirection, lightDirection);
-			if (traceShadowRay(shadowRay, rec))
+			light = lights[i];
+			Vector3 lightDirection = normalize(light->position - rec.hit_point);
+
+			
+			
+			if (traceShadowRay(Ray(Vector3(rec.hit_point + EPSILON * lightDirection), lightDirection), rec))
 			{
-				retColor += Color(0);
+				//in shadow
+				continue;
 			}
 			else
 			{
-				retColor += rec.color * LdotN;
+				//caucluate diffuse
+				double LDotN = std::max(0.0, dot(lightDirection, rec.normal));
+				if (LDotN > 0.0)
+				{
+					retColor += rec.shape->mat->albedo * LDotN * 0.6;
+				}
+
+				//calculate specular
+//				Vector3 R = 2 * dot(rec.normal, -rec.ray.direction) * rec.normal + rec.ray.direction;
+				if (rec.shape->mat->getSpecularCoefficiency() > 0.0)
+				{
+					Vector3 sD = normalize((lightDirection + (-rec.ray.direction)) / 2.0);
+					double SDotN = std::max(0.0, dot(sD, rec.normal));
+					if (SDotN > 0.0)
+					{
+						retColor += Color(0.8) * SDotN * rec.shape->mat->getSpecularCoefficiency();
+					}
+				}
+
 			}
 		}
+
+		if (rec.shape->mat->getReflectiveCoefficeincy() > 0.0)
+		{
+			Ray newRay = rec.shape->mat->scatter(rec);
+			retColor += calculate_pixel_color(newRay, ++iteration) * rec.shape->mat->getReflectiveCoefficeincy();
+		}
+
+//		Ray newRay = rec.shape->mat->scatter(rec);
+		return retColor;
 	}
-	retColor += rec.color * 0.2;
-	return retColor;
+	else
+	{
+		Vector3 unit_direction = normalize(ray.direction);
+		float t = 0.5 * (unit_direction.y + 1.0);
+		return (1.0 - t) * Color(1.0, 1.0, 1.0) + t * Color(0.5, 0.7, 1.0);
+	}
+//	return retColor + rec.shape->mat->albedo * 0.1;
 }
 
 void RayTracer::write()

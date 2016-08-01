@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 
 #include "Constants.h"
+#include "MathLib.h"
 
 #include "Image.h"
 #include "Vector3.h"
@@ -11,6 +11,10 @@
 #include "Sphere.h"
 #include "Plane.h"
 #include "ShadeRec.h"
+#include "Material.h"
+#include "Diffusive.h"
+#include "Reflective.h"
+#include "Camera.h"
 
 #include "RayTracer.h"
 
@@ -18,34 +22,50 @@
 
 int main(int argc, char *argv[])
 {
-	const int width = 600;
-	const int height = 600;
+	const int width = 300;
+	const int height = 200;
 
-	RayTracer raytracer(width, height, "WriteImage3.ppm");
+	const int numSamples = 1;
+	int sqSamples = sqrt(numSamples);
+
+	Vector3 origin(-4, 0, 0);
+	Vector3 target(0, 0, -10);
+	Vector3 up(0, 1, 0);
+
+	Camera camera(width, height, origin, target, up, 90.0);
+
+	RayTracer raytracer(width, height, "WriteImage4.ppm");
 
 
-	raytracer.addShape(new Sphere(Vector3(0.0, 0.0, -10.0), 5.0, Color(1.0, 0.0, 0.0)));
+	raytracer.addShape(new Sphere(Vector3(0.0, -2.0, -10.0), 3.0,  new Diffusive(Color(1.0, 0.0, 0.0), 0.33)));
+	raytracer.addShape(new Sphere(Vector3(7.0, -2.0, -13.0), 3.0,  new Diffusive(Color(0.3, 0.1, 0.1), 0.33)));
+	raytracer.addShape(new Sphere(Vector3(-7.0, -2.0, -13.0), 3.0,  new Reflective(Color(0.1, 0.1, 0.1), 0.6, 0.6, 10)));
 //	raytracer.addShape(new Sphere(Vector3(0.0, -10.0, -10.0), 5, Color(0.5, 0.5, 0.5)));
-	raytracer.addShape(new Plane(Vector3(0.0, -5.0, 0.0), Vector3(0.0, 1.0, 0.0), Color(0.5, 0.5, 0.5)));
-	raytracer.addLight(new Light(Vector3(0, 10, 0.0)));
-//	raytracer.addLight(new Light(Vector3(640, -100, -300)));
-
-
+	raytracer.addShape(new Plane(Vector3(0.0, -5.0, 0.0), Vector3(0.0, 1.0, 0.0), new Diffusive(Color(0.2, 0.2, 0.2), 0.33)));
+	raytracer.addLight(new Light(Vector3(0.0, 10, 0.0)));
+	raytracer.addLight(new Light(Vector3(10.0, 10, -5.0)));
 
 	Color pixcolor(0);
-	ShadeRec rec;
 	for (int Y = 0; Y < height; ++Y)
 	{
 		for (int X = 0; X < width; ++X)
 		{
 			pixcolor = Color(0);
 
-			Ray camRay = raytracer.castRay(X, Y);
-			rec = raytracer.traceRay(camRay);
-			if (rec.hit)
+			for (int i = 0; i < sqSamples; ++i)
 			{
-				pixcolor = raytracer.calculate_pixel_color(rec);
+				for (int j = 0; j < sqSamples; ++j)
+				{
+					ShadeRec rec(false);
+//					Ray camRay = raytracer.castRay(double(X) + (double(i) / double(sqrt(numSamples))), double(Y) + (double(j) / double(sqrt(numSamples)) ));
+//					Ray camRay = camera.getRay((double(X) + (double(i) / double(sqrt(numSamples))) / double(width)), (double(Y) + (double(j) / double(sqrt(numSamples))) / double(height)));
+					Ray camRay = camera.getRay(X, Y);
+
+					pixcolor += raytracer.calculate_pixel_color(camRay, 0);
+				}
 			}
+			pixcolor /= numSamples;
+
 			raytracer.image->pixel(X, Y, pixcolor);
 		}
 	}

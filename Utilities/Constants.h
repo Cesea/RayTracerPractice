@@ -4,6 +4,8 @@
 #include "Color.h"
 #include <float.h>
 
+#define M_PI 3.1415926
+
 static Color black(0);
 static Color white(0);
 static Color red(1.0, 0.0, 0.0);

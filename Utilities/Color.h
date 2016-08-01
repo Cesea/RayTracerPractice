@@ -41,6 +41,12 @@ class Color
 			return *this;
 		}
 
+		inline Color& operator /= (const double d)
+		{
+			r /= d; g /= d; b /= d;
+			return *this;
+		}
+
 		Color& clamp();
 		
 };
@@ -58,9 +64,29 @@ inline Color operator * (const Color& c, const double d)
 {
 	return Color(c.r*d, c.g*d, c.b*d);
 }
+inline Color operator * (const double d, const Color& c)
+{
+	return Color(c.r*d, c.g*d, c.b*d);
+}
+
+inline Color operator * (const Color& c1, const Color& c2)
+{
+	return Color(c1.r * c2.r, c1.g * c2.g, c1.b * c2.b);
+}
+
 inline Color operator / (const Color& c, const double d)
 {
 	return Color(c.r / d, c.g / d, c.b / d);
+}
+
+inline Color operator > (const Color& c, const double d)
+{
+	if (c.r > d || c.g > d || c.b > d) return true;
+}
+
+inline Color operator < (const Color& c, const double d)
+{
+	if (c.r < d || c.g < d || c.b < d) return true;
 }
 
 #endif

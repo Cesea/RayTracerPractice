@@ -8,14 +8,13 @@ class Sphere : public Shape
 public :
 	Vector3 center;
 	double radius;
-	Color color;
 
 	Sphere()
-		:center(), radius(), color()
+		:center(), radius(),  Shape::Shape()
 	{}
 
-	Sphere(Vector3& center_, double radius_, Color& color_)
-		:center(center_), radius(radius_), color(color_)
+	Sphere(Vector3& center_, double radius_,  Material* m_)
+		:center(center_), radius(radius_),  Shape::Shape(m_)
 	{}
 
 	virtual ShadeRec hit(const Ray& ray, double tmin, double tmax) ;
