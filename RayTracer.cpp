@@ -71,6 +71,66 @@ bool RayTracer::traceShadowRay(const Ray& ray, const ShadeRec& rec)
 	return temp;
 }
 
+Color RayTracer::ambientLighting(const ShadeRec& rec)
+{
+	Color retColor;
+	retColor += rec.shape->mat->albedo * 0.1;
+	return retColor;
+}
+
+Color RayTracer::diffuseAndSpecularLighting(const ShadeRec& rec)
+{
+	Color retColor;
+	for (int i = 0; i < lights.size(); ++i)
+	{
+		Light* light = lights[i];
+		Vector3 lightDirection = normalize(light->position - rec.hit_point);
+		if (traceShadowRay(Ray(Vector3(rec.hit_point + EPSILON * lightDirection), lightDirection), rec))
+		{
+			//in shadow
+			continue;
+		}
+		else
+		{
+			//caucluate diffuse
+			double LDotN = std::max(0.0, dot(lightDirection, rec.normal));
+			if (LDotN > 0.0)
+			{
+				retColor += rec.shape->mat->albedo * LDotN *
+					rec.shape->mat->getDiffuseCoefficiency() * light->color;
+			}
+			//calculate Specular
+			retColor += specularLighting(rec, light);
+		}
+	}
+	return retColor;
+}
+
+Color RayTracer::specularLighting(const ShadeRec& rec, Light *light)
+{
+	Color retColor(0);
+	double specularCoefficiency = rec.shape->mat->getSpecularCoefficiency();
+	if (specularCoefficiency < 0.0)
+	{
+		return retColor;
+	}
+	else
+	{
+		Vector3 lightDirection = normalize(light->position - rec.hit_point);
+		Vector3 halfVector = ((-rec.ray.direction + lightDirection) / 2.0);
+		double HDotN = std::max(0.0, dot(rec.normal, halfVector));
+		if (HDotN > 0.0)
+		{
+			double power = pow(HDotN, rec.shape->mat->getShininess()) * specularCoefficiency;
+			retColor.r = power;
+			retColor.g = power;
+			retColor.b = power;
+		}
+
+		return retColor;
+	}
+}
+
 
 Color RayTracer::calculate_pixel_color(const Ray& ray, int iteration)
 {
@@ -83,8 +143,9 @@ Color RayTracer::calculate_pixel_color(const Ray& ray, int iteration)
 	if (rec.hit  && rec.shape != nullptr)
 	{
 		//ambient light
-		retColor =  retColor + (rec.shape->mat->albedo * 0.1) ;
-
+		retColor += ambientLighting(rec);
+		retColor += diffuseAndSpecularLighting(rec);
+#if 0
 		//diffuse color calculation
 		for (int i = 0; i < lights.size(); ++i)
 		{
@@ -127,7 +188,7 @@ Color RayTracer::calculate_pixel_color(const Ray& ray, int iteration)
 			Ray newRay = rec.shape->mat->scatter(rec);
 			retColor += calculate_pixel_color(newRay, ++iteration) * rec.shape->mat->getReflectiveCoefficeincy();
 		}
-
+#endif
 //		Ray newRay = rec.shape->mat->scatter(rec);
 		return retColor;
 	}

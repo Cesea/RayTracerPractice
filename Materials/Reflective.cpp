@@ -5,8 +5,8 @@ Reflective::Reflective()
 	:Material::Material()
 {}
 
-Reflective::Reflective(const Color& al, const double rc, const double sc, const int fo)
-	: Material::Material(al), reflectiveCoefficiency(rc), falloff(fo), specularCoefficiency(sc)
+Reflective::Reflective(const Color& al, const double rc, const double sc, const int sh)
+	: Material::Material(al), reflectiveCoefficiency(rc), shininess(sh), specularCoefficiency(sc)
 {}
 
 Ray Reflective::scatter(const ShadeRec& sr) const
@@ -26,7 +26,7 @@ double Reflective::getReflectiveCoefficeincy() const
 	return reflectiveCoefficiency;
 }
 
-int Reflective::getFalloff() const
+int Reflective::getShininess() const
 {
-	return falloff;
+	return shininess;
 }

@@ -8,15 +8,15 @@ class Reflective : public Material
 public :
 	double reflectiveCoefficiency;
 	double specularCoefficiency;
-	int falloff;
+	int shininess;
 
 	Reflective();
-	Reflective(const Color& al, const double rc, const double sc, const int fo);
+	Reflective(const Color& al, const double rc, const double sc, const int sh);
 
 	Ray scatter(const ShadeRec& sr) const;
 	double getReflectiveCoefficeincy() const;
 	double getSpecularCoefficiency() const;
-	int getFalloff() const;
+	int getShininess() const;
 };
 
 #endif

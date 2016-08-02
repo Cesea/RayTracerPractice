@@ -10,20 +10,20 @@ Material::Material(const Color& al)
 
 double Material::getDiffuseCoefficiency() const
 {
-	return -0;
+	return -1;
 }
 
 double Material::getSpecularCoefficiency() const
 {
-	return -0;
+	return -1;
 }
 
 double Material::getReflectiveCoefficeincy() const
 {
-	return -0;
+	return -1;
 }
 
-int Material::getFalloff() const
+int Material::getShininess() const
 {
-	return -0;
+	return -1;
 }

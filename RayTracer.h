@@ -43,6 +43,12 @@ public :
 	ShadeRec traceRay(const Ray& ray);
 	bool traceShadowRay(const Ray& ray, const ShadeRec& rec);
 	Color calculate_pixel_color(const Ray& ray, int iteration);
+
+	Color performLighting(const ShadeRec& rec);
+	Color ambientLighting(const ShadeRec& rec);
+	Color diffuseAndSpecularLighting(const ShadeRec& rec);
+	Color specularLighting(const ShadeRec& rec, Light *light);
+
 	void write();
 
 	void addShape(Shape *shape);

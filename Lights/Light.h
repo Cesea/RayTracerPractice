@@ -2,6 +2,7 @@
 #define __LIGHT_H__
 
 #include "Constants.h"
+#include "Color.h"
 #include "Vector3.h"
 
 class Light
@@ -9,13 +10,14 @@ class Light
 public :
 
 	Vector3 position;
+	Color color;
 
 	Light()
-		:position()
+		:position(), color()
 	{}
 
-	Light(Vector3 position_)
-		:position(position_)
+	Light(const Vector3& position_, const Color& color_ )
+		:position(position_), color(color_)
 	{}
 };
 

@@ -21,7 +21,7 @@ public :
 	virtual double getDiffuseCoefficiency() const;
 	virtual double getSpecularCoefficiency() const;
 	virtual double getReflectiveCoefficeincy() const;
-	virtual int getFalloff() const;
+	virtual int getShininess() const;
 };
 
 
