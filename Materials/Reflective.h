@@ -12,7 +12,7 @@ public :
 	int shininess;
 
 	Reflective();
-	Reflective(const Color& al, const double dc, const double rc, const double sc, const int sh);
+	Reflective(Texture *albedo_, const double dc, const double rc, const double sc, const int sh);
 
 	Ray scatter(const ShadeRec& sr) const;
 	double getDiffuseCoefficiency() const;

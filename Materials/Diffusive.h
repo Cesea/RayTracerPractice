@@ -11,7 +11,7 @@ public :
 	double diffuseCoefficient;
 
 	Diffusive();
-	Diffusive(const Color& al, const double& dc);
+	Diffusive(Texture* albedo_, const double& dc);
 
 	Ray scatter(const ShadeRec& sr) const;
 	virtual double getDiffuseCoefficiency() const;

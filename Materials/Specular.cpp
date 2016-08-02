@@ -5,8 +5,8 @@ Specular::Specular()
 	: Material::Material(), specularCoefficiency(), shininess(), diffuseCoefficiency()
 {}
 
-Specular::Specular(const Color& al, const double dc, const double sc, const int sh)
-	: Material::Material(al), diffuseCoefficiency(dc), specularCoefficiency(sc), shininess(sh)
+Specular::Specular(Texture *albedo_, const double dc, const double sc, const int sh)
+	: Material::Material(albedo_), diffuseCoefficiency(dc), specularCoefficiency(sc), shininess(sh)
 {}
 
 Ray Specular::scatter(const ShadeRec& sr) const

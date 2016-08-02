@@ -74,7 +74,7 @@ bool RayTracer::traceShadowRay(const Ray& ray, const ShadeRec& rec)
 Color RayTracer::ambientLighting(const ShadeRec& rec)
 {
 	Color retColor;
-	retColor += rec.shape->mat->albedo * 0.1;
+	retColor += rec.shape->mat->albedo->getColor(rec.hit_point) * 0.1;
 	return retColor;
 }
 
@@ -96,7 +96,7 @@ Color RayTracer::diffuseAndSpecularLighting(const ShadeRec& rec)
 			double LDotN = std::max(0.0, dot(lightDirection, rec.normal));
 			if (LDotN > 0.0)
 			{
-				retColor += rec.shape->mat->albedo * LDotN *
+				retColor += rec.shape->mat->albedo->getColor(rec.hit_point) * LDotN *
 					rec.shape->mat->getDiffuseCoefficiency() * light->color;
 			}
 			//calculate Specular

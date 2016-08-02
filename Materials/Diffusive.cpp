@@ -5,8 +5,8 @@ Diffusive::Diffusive()
 {}
 
 
-Diffusive::Diffusive(const Color& al, const double& dc)
-	:Material::Material(al), diffuseCoefficient(dc)
+Diffusive::Diffusive(Texture *albedo_, const double& dc)
+	:Material::Material(albedo_), diffuseCoefficient(dc)
 {}
 
 Ray Diffusive::scatter(const ShadeRec& sr) const

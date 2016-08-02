@@ -4,8 +4,8 @@ Material::Material()
 	:albedo()
 {}
 
-Material::Material(const Color& al)
-	: albedo(al)
+Material::Material(Texture *albedo_)
+	: albedo(albedo_)
 {}
 
 double Material::getDiffuseCoefficiency() const

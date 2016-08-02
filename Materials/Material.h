@@ -6,16 +6,17 @@
 #include "Ray.h"
 #include "ShadeRec.h"
 #include "Constants.h"
+#include "Texture.h"
 
 #include "MathLib.h"
 
 class Material
 {
 public :
-	Color albedo;
+	Texture *albedo;
 
 	Material();
-	Material(const Color& al);
+	Material(Texture* albedo_);
 
 	virtual Ray scatter(const ShadeRec& sr) const = 0;
 	virtual double getDiffuseCoefficiency() const;

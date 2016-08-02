@@ -5,8 +5,8 @@ Reflective::Reflective()
 	:Material::Material(), diffuseCoefficiency(), reflectiveCoefficiency(), specularCoefficiency()
 {}
 
-Reflective::Reflective(const Color& al,const double dc, const double rc, const double sc, const int sh)
-	: Material::Material(al), diffuseCoefficiency(dc), reflectiveCoefficiency(rc), shininess(sh), specularCoefficiency(sc)
+Reflective::Reflective(Texture *albedo_, const double dc, const double rc, const double sc, const int sh)
+	: Material::Material(albedo_), diffuseCoefficiency(dc), reflectiveCoefficiency(rc), shininess(sh), specularCoefficiency(sc)
 {}
 
 Ray Reflective::scatter(const ShadeRec& sr) const

@@ -17,6 +17,9 @@
 #include "Reflective.h"
 #include "Camera.h"
 
+#include "Texture.h"
+#include "ConstantTexture.h"
+
 #include "RayTracer.h"
 
 
@@ -39,12 +42,12 @@ int main(int argc, char *argv[])
 
 
 //	raytracer.addShape(new Sphere(Vector3(0.0, -2.0, -10.0), 3.0,  new Diffusive(Color(1.0, 0.0, 0.0), 0.4)));
-	raytracer.addShape(new Sphere(Vector3(0.0, -2.0, -10.0), 3.0,  new Reflective(Color(0.1, 0.1, 0.1), 0.1, 0.6, 0.9, 20)));
-	raytracer.addShape(new Sphere(Vector3(7.0, -2.0, -13.0), 3.0,  new Diffusive(Color(0.3, 0.4, 0.1), 0.4)));
-	raytracer.addShape(new Sphere(Vector3(-7.0, -2.0, -13.0), 3.0,  new Specular(Color(0.1, 0.3, 0.3), 0.33,  0.6, 20)));
-	raytracer.addShape(new Sphere(Vector3(0.0, 4.0, -13.0), 3.0,  new Reflective(Color(0.1, 0.1, 0.1), 0.1, 0.6, 0.6, 20)));
+	raytracer.addShape(new Sphere(Vector3(0.0, -2.0, -10.0), 3.0,  new Reflective(new ConstantTexture(Color(0.1, 0.1, 0.1)), 0.1, 0.6, 0.9, 20)));
+	raytracer.addShape(new Sphere(Vector3(7.0, -2.0, -13.0), 3.0,  new Diffusive(new ConstantTexture(Color(0.3, 0.4, 0.1)), 0.4)));
+	raytracer.addShape(new Sphere(Vector3(-7.0, -2.0, -13.0), 3.0,  new Specular(new ConstantTexture(Color(0.1, 0.3, 0.3)), 0.33,  0.6, 20)));
+	raytracer.addShape(new Sphere(Vector3(0.0, 4.0, -13.0), 3.0,  new Reflective(new ConstantTexture(Color(0.1, 0.1, 0.1)), 0.1, 0.6, 0.6, 20)));
 //	raytracer.addShape(new Sphere(Vector3(0.0, -10.0, -10.0), 5, Color(0.5, 0.5, 0.5)));
-	raytracer.addShape(new Plane(Vector3(0.0, -5.0, 0.0), Vector3(0.0, 1.0, 0.0), new Diffusive(Color(0.7, 0.7, 0.7), 0.6)));
+	raytracer.addShape(new Plane(Vector3(0.0, -5.0, 0.0), Vector3(0.0, 1.0, 0.0), new Diffusive(new ConstantTexture(Color(0.7, 0.7, 0.7)), 0.6)));
 	raytracer.addLight(new Light(Vector3(0.0, 10, 0.0), Color(1.0, 1.0, 1.0)));
 	raytracer.addLight(new Light(Vector3(10.0, 10, -5.0), Color(1.0, 1.0, 1.0)));
 

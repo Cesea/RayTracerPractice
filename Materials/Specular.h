@@ -11,7 +11,7 @@ public:
 	int shininess;
 
 	Specular();
-	Specular(const Color& al, const double dc, const double sc, const int sh);
+	Specular( Texture *albedo_, const double dc, const double sc, const int sh);
 
 	Ray scatter(const ShadeRec& sr) const;
 	double getDiffuseCoefficiency() const;
