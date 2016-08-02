@@ -18,7 +18,7 @@ double Material::getSpecularCoefficiency() const
 	return -1;
 }
 
-double Material::getReflectiveCoefficeincy() const
+double Material::getReflectiveCoefficiency() const
 {
 	return -1;
 }

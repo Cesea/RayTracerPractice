@@ -6,15 +6,17 @@
 class Reflective : public Material
 {
 public :
+	double diffuseCoefficiency;
 	double reflectiveCoefficiency;
 	double specularCoefficiency;
 	int shininess;
 
 	Reflective();
-	Reflective(const Color& al, const double rc, const double sc, const int sh);
+	Reflective(const Color& al, const double dc, const double rc, const double sc, const int sh);
 
 	Ray scatter(const ShadeRec& sr) const;
-	double getReflectiveCoefficeincy() const;
+	double getDiffuseCoefficiency() const;
+	double getReflectiveCoefficiency() const;
 	double getSpecularCoefficiency() const;
 	int getShininess() const;
 };

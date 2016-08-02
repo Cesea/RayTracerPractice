@@ -14,14 +14,14 @@ Camera::Camera(int width_, int height_, Vector3 eye_, Vector3 target_, Vector3 u
 	u = u * aspectRatio * tanfov;
 	v = v * tanfov;
 
-	upper_left = -u + v;
+	upper_left = -u + v - w;
 	horizontal = Vector3();
 }
 Ray Camera::getRay(double X, double Y)
 {
 	Ray retRay;
 	retRay.origin = origin;
-	Vector3 direction = -u + v - w;
+	Vector3 direction = upper_left;
 	/*
 	double udir = (2.0 * (double(X) / double(width)) - 1);
 	double vdir = 1.0 - 2.0*(double(Y) / double(height));

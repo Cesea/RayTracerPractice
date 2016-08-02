@@ -18,7 +18,7 @@
 
 #include "Light.h"
 
-
+#define MAX_REFLECTION_DEPTH 5
 
 class RayTracer
 {
@@ -48,6 +48,7 @@ public :
 	Color ambientLighting(const ShadeRec& rec);
 	Color diffuseAndSpecularLighting(const ShadeRec& rec);
 	Color specularLighting(const ShadeRec& rec, Light *light);
+	Color reflectionLighting(const ShadeRec& rec, int iteration);
 
 	void write();
 

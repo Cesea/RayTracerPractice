@@ -23,10 +23,10 @@
 
 int main(int argc, char *argv[])
 {
-	const int width = 300;
-	const int height = 200;
+	const int width = 600;
+	const int height = 400;
 
-	const int numSamples = 4;
+	const int numSamples = 9;
 	int sqSamples = sqrt(numSamples);
 
 	Vector3 origin(0, 0, 0);
@@ -38,13 +38,15 @@ int main(int argc, char *argv[])
 	RayTracer raytracer(width, height, "WriteImage4.ppm");
 
 
-	raytracer.addShape(new Sphere(Vector3(0.0, -2.0, -10.0), 3.0,  new Diffusive(Color(1.0, 0.0, 0.0), 0.33)));
-	raytracer.addShape(new Sphere(Vector3(7.0, -2.0, -13.0), 3.0,  new Diffusive(Color(0.3, 0.1, 0.1), 0.33)));
-	raytracer.addShape(new Sphere(Vector3(-7.0, -2.0, -13.0), 3.0,  new Specular(Color(0.1, 0.1, 0.1), 0.33,  0.6, 20)));
+//	raytracer.addShape(new Sphere(Vector3(0.0, -2.0, -10.0), 3.0,  new Diffusive(Color(1.0, 0.0, 0.0), 0.4)));
+	raytracer.addShape(new Sphere(Vector3(0.0, -2.0, -10.0), 3.0,  new Reflective(Color(0.1, 0.1, 0.1), 0.1, 0.6, 0.9, 20)));
+	raytracer.addShape(new Sphere(Vector3(7.0, -2.0, -13.0), 3.0,  new Diffusive(Color(0.3, 0.4, 0.1), 0.4)));
+	raytracer.addShape(new Sphere(Vector3(-7.0, -2.0, -13.0), 3.0,  new Specular(Color(0.1, 0.3, 0.3), 0.33,  0.6, 20)));
+	raytracer.addShape(new Sphere(Vector3(0.0, 4.0, -13.0), 3.0,  new Reflective(Color(0.1, 0.1, 0.1), 0.1, 0.6, 0.6, 20)));
 //	raytracer.addShape(new Sphere(Vector3(0.0, -10.0, -10.0), 5, Color(0.5, 0.5, 0.5)));
-	raytracer.addShape(new Plane(Vector3(0.0, -5.0, 0.0), Vector3(0.0, 1.0, 0.0), new Diffusive(Color(0.2, 0.2, 0.2), 0.33)));
-	raytracer.addLight(new Light(Vector3(0.0, 10, 0.0), Color(0.9, 0.9, 0.9)));
-	raytracer.addLight(new Light(Vector3(10.0, 10, -5.0), Color(0.8, 0.8, 0.8)));
+	raytracer.addShape(new Plane(Vector3(0.0, -5.0, 0.0), Vector3(0.0, 1.0, 0.0), new Diffusive(Color(0.7, 0.7, 0.7), 0.6)));
+	raytracer.addLight(new Light(Vector3(0.0, 10, 0.0), Color(1.0, 1.0, 1.0)));
+	raytracer.addLight(new Light(Vector3(10.0, 10, -5.0), Color(1.0, 1.0, 1.0)));
 
 	Color pixcolor(0);
 	for (int Y = 0; Y < height; ++Y)

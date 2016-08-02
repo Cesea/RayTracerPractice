@@ -2,18 +2,23 @@
 
 
 Reflective::Reflective()
-	:Material::Material()
+	:Material::Material(), diffuseCoefficiency(), reflectiveCoefficiency(), specularCoefficiency()
 {}
 
-Reflective::Reflective(const Color& al, const double rc, const double sc, const int sh)
-	: Material::Material(al), reflectiveCoefficiency(rc), shininess(sh), specularCoefficiency(sc)
+Reflective::Reflective(const Color& al,const double dc, const double rc, const double sc, const int sh)
+	: Material::Material(al), diffuseCoefficiency(dc), reflectiveCoefficiency(rc), shininess(sh), specularCoefficiency(sc)
 {}
 
 Ray Reflective::scatter(const ShadeRec& sr) const
 {
-	Vector3 refDirection = sr.ray.direction + 2.0 * dot(-sr.ray.direction, sr.normal) * sr.normal;
+	Vector3 refDirection = normalize(sr.ray.direction + 2.0 * dot(-sr.ray.direction, sr.normal) * sr.normal);
 	Ray retRay(sr.hit_point + EPSILON * refDirection, refDirection);
 	return retRay;
+}
+
+double Reflective::getDiffuseCoefficiency() const
+{
+	return diffuseCoefficiency;
 }
 
 double Reflective::getSpecularCoefficiency() const
@@ -21,7 +26,7 @@ double Reflective::getSpecularCoefficiency() const
 	return specularCoefficiency;
 }
 
-double Reflective::getReflectiveCoefficeincy() const
+double Reflective::getReflectiveCoefficiency() const
 {
 	return reflectiveCoefficiency;
 }

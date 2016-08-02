@@ -20,7 +20,7 @@ public :
 	virtual Ray scatter(const ShadeRec& sr) const = 0;
 	virtual double getDiffuseCoefficiency() const;
 	virtual double getSpecularCoefficiency() const;
-	virtual double getReflectiveCoefficeincy() const;
+	virtual double getReflectiveCoefficiency() const;
 	virtual int getShininess() const;
 };
 

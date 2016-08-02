@@ -121,12 +121,29 @@ Color RayTracer::specularLighting(const ShadeRec& rec, Light *light)
 		double HDotN = std::max(0.0, dot(rec.normal, halfVector));
 		if (HDotN > 0.0)
 		{
-			double power = pow(HDotN, rec.shape->mat->getShininess()) * specularCoefficiency;
+			double power = pow(HDotN, rec.shape->mat->getShininess()) * specularCoefficiency ;
 			retColor.r = power;
 			retColor.g = power;
 			retColor.b = power;
+			retColor *= light->color;
 		}
 
+		return retColor;
+	}
+}
+
+Color RayTracer::reflectionLighting(const ShadeRec& rec, int iteration)
+{
+	Color retColor(0);
+	double reflectiveCoefficiency = rec.shape->mat->getReflectiveCoefficiency();
+	if (reflectiveCoefficiency < EPSILON || iteration > MAX_REFLECTION_DEPTH)
+	{
+		return retColor;
+	}
+	else
+	{
+		Ray reflecRay = rec.shape->mat->scatter(rec);
+		retColor += calculate_pixel_color(reflecRay, iteration++) * reflectiveCoefficiency;
 		return retColor;
 	}
 }
@@ -145,6 +162,7 @@ Color RayTracer::calculate_pixel_color(const Ray& ray, int iteration)
 		//ambient light
 		retColor += ambientLighting(rec);
 		retColor += diffuseAndSpecularLighting(rec);
+		retColor += reflectionLighting(rec, iteration);
 #if 0
 		//diffuse color calculation
 		for (int i = 0; i < lights.size(); ++i)
