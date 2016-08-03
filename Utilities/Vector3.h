@@ -34,6 +34,8 @@ public :
 	Vector3& operator *= (const double d);
 	Vector3& operator /= (const double d);
 
+	
+
 	double length();
 	double length_squared();
 	void normalize();
@@ -79,4 +81,38 @@ inline Vector3 cross(const Vector3& v1, const Vector3& v2)
 					v1.z*v2.x - v1.x*v2.z,
 					v1.x*v2.y - v1.y*v2.x);
 }
+
+inline bool operator == (const Vector3& v1, const Vector3& v2)
+{
+	if (v1.x == v2.x && v1.y == v2.y && v1.z == v2.z)
+		return true;
+	else
+		return false;
+}
+
+static Vector3 getReflect(const Vector3& incident, const Vector3& normal)
+{
+	Vector3 retVec;
+	retVec = 2 * dot(-incident, normal) * normal + incident;
+	return retVec;
+}
+
+static bool getRefract(const Vector3& incident, const Vector3& normal, double index, Vector3& refracted)
+{
+	Vector3 ui = normalize(incident);
+	double IDotN = dot(-ui, normal);
+	double n1_over_n2 = index;
+	double discriminant = 1.0 - n1_over_n2 * n1_over_n2 * (1 - IDotN * IDotN);
+	if (discriminant > 0)
+	{
+		refracted = n1_over_n2 * (incident + normal * IDotN) - normal * sqrt(discriminant);
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+
 #endif

@@ -21,9 +21,6 @@ public:
 	double tanfov;
 
 
-
-
-	Camera();
 	Camera(int width_, int height_, Vector3 eye_, Vector3 target_, Vector3 up_, double fov_);
 	Ray getRay(double X, double Y);
 };

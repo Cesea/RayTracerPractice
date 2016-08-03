@@ -136,7 +136,7 @@ Color RayTracer::reflectionLighting(const ShadeRec& rec, int iteration)
 {
 	Color retColor(0);
 	double reflectiveCoefficiency = rec.shape->mat->getReflectiveCoefficiency();
-	if (reflectiveCoefficiency < EPSILON || iteration > MAX_REFLECTION_DEPTH)
+	if (reflectiveCoefficiency < EPSILON || iteration > MAX_ITERATION_DEPTH)
 	{
 		return retColor;
 	}
@@ -144,6 +144,28 @@ Color RayTracer::reflectionLighting(const ShadeRec& rec, int iteration)
 	{
 		Ray reflecRay = rec.shape->mat->scatter(rec);
 		retColor += calculate_pixel_color(reflecRay, iteration++) * reflectiveCoefficiency;
+		return retColor;
+	}
+}
+
+Color RayTracer::refractionLighting(const ShadeRec& rec, int iteration)
+{
+	Color retColor(0);
+	double refractiveCoefficiency = rec.shape->mat->getRefractiveCoefficiency();
+	if (refractiveCoefficiency < EPSILON || iteration > MAX_ITERATION_DEPTH)
+	{
+		return retColor;
+	}
+	else
+	{
+		Ray refractRay = rec.shape->mat->scatter(rec);
+		//no refraction
+		if (refractRay.direction == Vector3(0))
+		{
+			return retColor;
+		}
+
+		retColor += calculate_pixel_color(refractRay, iteration++) * refractiveCoefficiency;
 		return retColor;
 	}
 }
@@ -163,6 +185,7 @@ Color RayTracer::calculate_pixel_color(const Ray& ray, int iteration)
 		retColor += ambientLighting(rec);
 		retColor += diffuseAndSpecularLighting(rec);
 		retColor += reflectionLighting(rec, iteration);
+//		retColor += refractionLighting(rec, iteration);
 #if 0
 		//diffuse color calculation
 		for (int i = 0; i < lights.size(); ++i)
@@ -212,9 +235,12 @@ Color RayTracer::calculate_pixel_color(const Ray& ray, int iteration)
 	}
 	else
 	{
+		/*
 		Vector3 unit_direction = normalize(ray.direction);
 		float t = 0.5 * (unit_direction.y + 1.0);
 		return (1.0 - t) * Color(1.0, 1.0, 1.0) + t * Color(0.5, 0.7, 1.0);
+		*/
+		return retColor;
 	}
 //	return retColor + rec.shape->mat->albedo * 0.1;
 }

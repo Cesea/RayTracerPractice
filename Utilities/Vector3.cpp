@@ -39,3 +39,4 @@ void Vector3::normalize()
 	double k = 1.0 / sqrt(x*x + y*y + z*z);
 	x *= k; y *= k; z *= k;
 }
+

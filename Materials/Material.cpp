@@ -27,3 +27,8 @@ int Material::getShininess() const
 {
 	return -1;
 }
+
+double Material::getRefractiveCoefficiency() const
+{
+	return -1;
+}
